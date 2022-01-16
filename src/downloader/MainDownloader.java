@@ -1,6 +1,7 @@
 package downloader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MainDownloader
@@ -18,16 +19,29 @@ public class MainDownloader
 		System.out.println("\nThumbnail image will be saved in D drive.");
 		String vidURL = getVidUrl();
 
-		try
-		{
-			String[] arrOfStr = vidURL.split("&");
-			String urlWithoutTimeStamp;
-			urlWithoutTimeStamp = vidURL.replace("&"+arrOfStr[1], "");
-			vidID = urlWithoutTimeStamp.replace("https://www.youtube.com/watch?v=", "");
-		} catch (Exception e)
-		{
-			vidID = vidURL.replace("https://www.youtube.com/watch?v=", "");
-		}
+			try
+			{
+				String[] arrOfStr = vidURL.split("&");
+				String urlWithoutTimeStamp;
+				urlWithoutTimeStamp = vidURL.replace("&"+arrOfStr[1], "");
+				vidID = urlWithoutTimeStamp.replace("https://www.youtube.com/watch?v=", "");
+				System.out.println("Thumbnail location: D:\\thumbnail_"+vidID+".jpg");
+			}
+			catch (Exception e)
+			{
+				try
+				{
+					String[] arrOfStr = vidURL.split("=");
+				//	vidID = vidURL.replace("https://www.youtube.com/watch?v=", "");
+					vidID = arrOfStr[1];
+					System.out.println("Thumbnail location: D:\\thumbnail_"+vidID+".jpg");
+				} catch (Exception e1)
+				{
+					vidID = vidURL.replace("https://youtu.be/", "");
+					System.out.println("Thumbnail location: D:\\thumbnail_"+vidID+".jpg");
+				}
+			}
+		
 
 		thumbMaxRes = "http://i.ytimg.com/vi/"+vidID+"/maxresdefault.jpg";
 		thumbHq = "http://i.ytimg.com/vi/"+vidID+"/hqdefault.jpg";
